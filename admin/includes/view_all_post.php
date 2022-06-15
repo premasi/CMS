@@ -13,6 +13,27 @@ if (isset($_POST['checkBoxesArray'])) {
                 $query = "UPDATE posts SET post_status = '{$bulk_option}' WHERE post_id = $checkBoxesValues";
                 $updatestatus = mysqli_query($connection, $query);
                 break;
+            case 'clone':
+                $query = "SELECT * FROM posts WHERE post_id = $checkBoxesValues";
+                $get_posts = mysqli_query($connection, $query);
+
+                while ($row = mysqli_fetch_assoc($get_posts)) {
+                    $cat_id = $row['post_category_id'];
+                    $post_title = $row['post_title'];
+                    $post_author = $row['post_author'];
+                    $post_images = $row['post_images'];
+                    $post_content = $row['post_content'];
+                    $post_tag = $row['post_tag'];
+                    $post_comment_count = $row['post_comment_count'];
+                    $post_status = $row['post_status'];
+                }
+
+                $query = "INSERT INTO posts (post_category_id, post_title, post_author, post_date, post_images, post_content, post_tag, post_status) ";
+                $query .= "VALUES({$cat_id}, '{$post_title}', '{$post_author}', now(), '{$post_images}', '{$post_content}', '{$post_tag}', '{$post_status}')";
+
+                $copy_post = mysqli_query($connection, $query);
+
+                break;
             case 'delete':
                 $query = "DELETE FROM posts WHERE post_id = $checkBoxesValues";
                 $updatestatus = mysqli_query($connection, $query);
@@ -30,6 +51,7 @@ if (isset($_POST['checkBoxesArray'])) {
                 <option value="">Select Option</option>
                 <option value="published">Publish</option>
                 <option value="draft">Draft</option>
+                <option value="clone">Clone</option>
                 <option value="delete">Delete</option>
             </select>
 
@@ -58,7 +80,7 @@ if (isset($_POST['checkBoxesArray'])) {
         </thead>
         <tbody>
             <?php
-            $query = "SELECT * FROM posts";
+            $query = "SELECT * FROM posts ORDER BY post_date DESC ";
             $select_posts = mysqli_query($connection, $query);
 
             while ($row = mysqli_fetch_assoc($select_posts)) {
