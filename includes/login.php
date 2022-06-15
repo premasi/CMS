@@ -27,6 +27,8 @@ if(isset($_POST['login'])){
         $role = $row['role'];
     }
 
+    $password = crypt($password, $user_password);
+
     if($username !== $user_username && $password !== $user_password){
         header("location: ../index.php");
     } else {
