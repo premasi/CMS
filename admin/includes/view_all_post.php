@@ -34,6 +34,10 @@ if (isset($_POST['checkBoxesArray'])) {
                 $copy_post = mysqli_query($connection, $query);
 
                 break;
+            case 'reset':
+                $query = "UPDATE posts SET post_views_count = 0 WHERE post_id = $checkBoxesValues";
+                $updatestatus = mysqli_query($connection, $query);
+                break;
             case 'delete':
                 $query = "DELETE FROM posts WHERE post_id = $checkBoxesValues";
                 $updatestatus = mysqli_query($connection, $query);
@@ -44,6 +48,7 @@ if (isset($_POST['checkBoxesArray'])) {
 
 ?>
 
+
 <form action="" method="post">
     <table class="table table-bordered table-hover">
         <div id="bulkOptionContainer" class="col-xs-3" style="padding: 0; margin-bottom: 20px;">
@@ -52,6 +57,7 @@ if (isset($_POST['checkBoxesArray'])) {
                 <option value="published">Publish</option>
                 <option value="draft">Draft</option>
                 <option value="clone">Clone</option>
+                <option value="reset">Reset View Count</option>
                 <option value="delete">Delete</option>
             </select>
 
@@ -73,6 +79,7 @@ if (isset($_POST['checkBoxesArray'])) {
             <th>Tags</th>
             <th>Comments</th>
             <th>Date</th>
+            <th>Views Count</th>
             <th>Link</th>
             <th>Edit</th>
             <th>Delete</th>
@@ -93,6 +100,7 @@ if (isset($_POST['checkBoxesArray'])) {
                 $post_tags = $row['post_tag'];
                 $post_comment = $row['post_comment_count'];
                 $post_date = $row['post_date'];
+                $post_view = $row['post_views_count'];
 
             ?>
                 <tr>
@@ -119,6 +127,7 @@ if (isset($_POST['checkBoxesArray'])) {
                     <td><?php echo $post_tags    ?></td>
                     <td><?php echo $post_comment    ?></td>
                     <td><?php echo $post_date    ?></td>
+                    <td><?php echo $post_view    ?></td>
                     <td><a href="../post.php?p_id=<?php echo $post_id; ?>" class="btn btn-secondary">Link Post</a></td>
                     <td><a href="posts.php?source=edit_posts&p_id=<?php echo $post_id; ?>" class="btn btn-secondary">Edit</a></td>
                     <td><a onclick="javascript: return confirm('Are you sure?');" href="posts.php?delete=<?php echo $post_id; ?>" class="btn btn-danger">Delete</a></td>
