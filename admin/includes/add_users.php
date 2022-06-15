@@ -11,6 +11,11 @@ if(isset($_POST['create_user'])){
 
     $username = $_POST['username'];
     $user_password = $_POST['user_password'];
+
+    $hashformat = "2y$10$";
+    $salt = "willyoumarrymeyeahjust";
+    $hash_and_salt = $hashformat . $salt;
+    $password = crypt($user_password, $hash_and_salt);
     
     //tanggal
     //$post_date = date('d-m-y');
@@ -19,7 +24,7 @@ if(isset($_POST['create_user'])){
     move_uploaded_file($user_image_temp, "../images/$user_image");
 
     $query = "INSERT INTO users (user_firstname, user_lastname, user_email, user_image, username, user_password, role) ";
-    $query .= "VALUES('{$user_firstname}', '{$user_lastname}', '{$user_email}', '{$user_image}', '{$username}', '{$user_password}', '{$role}')";
+    $query .= "VALUES('{$user_firstname}', '{$user_lastname}', '{$user_email}', '{$user_image}', '{$username}', '{$password}', '{$role}')";
 
     $create_user_query = mysqli_query($connection, $query);
 

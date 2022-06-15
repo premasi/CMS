@@ -99,7 +99,7 @@ if (isset($_POST['checkBoxesArray'])) {
                     <td><?php echo $post_date    ?></td>
                     <td><a href="../post.php?p_id=<?php echo $post_id; ?>" class="btn btn-secondary">Link Post</a></td>
                     <td><a href="posts.php?source=edit_posts&p_id=<?php echo $post_id; ?>" class="btn btn-secondary">Edit</a></td>
-                    <td><a href="posts.php?delete=<?php echo $post_id; ?>" class="btn btn-danger">Delete</a></td>
+                    <td><a onclick="javascript: return confirm('Are you sure?');" href="posts.php?delete=<?php echo $post_id; ?>" class="btn btn-danger">Delete</a></td>
                 </tr>
 
             <?php } ?>

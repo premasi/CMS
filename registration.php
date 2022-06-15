@@ -24,14 +24,15 @@ if (isset($_POST['submit'])) {
         $select_randsalt = mysqli_query($connection, $query);
 
         //menambil salt dari kolom database
-        // $row = mysqli_fetch_assoc($select_randsalt);
-        // $salt = $row['randsalt'];
+        $row = mysqli_fetch_assoc($select_randsalt);
+        $salt = $row['randsalt'];
+        $password = crypt($password, $salt);
 
         //cara lain
-        $hashformat = "2y$10$";
-        $salt = "willyoumarrymeyeahjust";
-        $hash_and_salt = $hashformat . $salt;
-        $password = crypt($password, $hash_and_salt);
+        // $hashformat = "2y$10$";
+        // $salt = "willyoumarrymeyeahjust";
+        // $hash_and_salt = $hashformat . $salt;
+        // $password = crypt($password, $hash_and_salt);
 
 
         $query = "INSERT INTO users (username, user_email, user_password, role) ";
