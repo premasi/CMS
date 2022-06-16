@@ -24,8 +24,7 @@ include "./includes/admin_header.php";
 
                         <!-- content -->
                         <div class="col-xs-6">
-                            <?php
-                            include "./includes/function.php"; 
+                            <?php 
                             insert_categories();
                             ?>
                             <form action="./categories.php" method="post">

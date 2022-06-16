@@ -14,65 +14,11 @@ if (isset($_SESSION['user_id'])) {
         $username = $row['username'];
         $user_password = $row['user_password'];
         $user_image = $row['user_image'];
-        $role = $row['role'];
     }
 }
 ?>
 
-<?php
-if (isset($_POST['update_user'])) {
 
-    $user_firstname = $_POST['user_firstname'];
-    $user_lastname = $_POST['user_lastname'];
-    $role = $_POST['role'];
-    $user_email = $_POST['user_email'];
-
-    //upload file
-    $user_image = $_FILES['image']['name'];
-    $user_image_temp = $_FILES['image']['tmp_name']; //diupload melalui temporary setelah disimpin di temp
-
-    $username = $_POST['username'];
-    $user_password = $_POST['user_password'];
-
-    //tanggal
-    //$post_date = date('d-m-y');
-    //$comment_count = 4;
-
-    move_uploaded_file($user_image_temp, "../images/$user_image");
-
-    if (empty($user_image)) {
-        $query = "SELECT * FROM users WHERE user_id = $user_id ";
-
-        $select_image = mysqli_query($connection, $query);
-
-        while ($row = mysqli_fetch_array($select_image)) {
-
-            $user_image = $row['user_image'];
-        }
-
-        if (!$select_image) {
-            die("Query" . mysqli_error($connection));
-        }
-    }
-
-    $query = "UPDATE users SET ";
-    $query .= "user_firstname = '{$user_firstname}', ";
-    $query .= "user_lastname = '{$user_lastname}', ";
-    $query .= "role = '{$role}', ";
-    $query .= "user_email = '{$user_email}', ";
-    $query .= "user_image = '{$user_image}', ";
-    $query .= "username = '{$username}', ";
-    $query .= "user_password = '{$user_password}' ";
-    $query .= "WHERE user_id = '{$user_id}' ";
-
-    $update_user = mysqli_query($connection, $query);
-
-    if (!$update_user) {
-        die("failed" . mysqli_error($connection));
-    }
-
-    header("location: ./users.php");
-}
 
 
 
@@ -83,6 +29,61 @@ if (isset($_POST['update_user'])) {
     <!-- Navigation -->
     <?php
     include "./includes/admin_navigation.php";
+    ?>
+
+    <?php
+    if (isset($_POST['update_user'])) {
+
+        $user_firstname = $_POST['user_firstname'];
+        $user_lastname = $_POST['user_lastname'];
+        $user_email = $_POST['user_email'];
+
+        //upload file
+        $user_image = $_FILES['image']['name'];
+        $user_image_temp = $_FILES['image']['tmp_name']; //diupload melalui temporary setelah disimpin di temp
+
+        $username = $_POST['username'];
+        $user_password = $_POST['user_password'];
+
+        //tanggal
+        //$post_date = date('d-m-y');
+        //$comment_count = 4;
+
+        move_uploaded_file($user_image_temp, "../images/$user_image");
+
+        if (empty($user_image)) {
+            $query = "SELECT * FROM users WHERE user_id = $user_id ";
+
+            $select_image = mysqli_query($connection, $query);
+
+            while ($row = mysqli_fetch_array($select_image)) {
+
+                $user_image = $row['user_image'];
+            }
+
+            if (!$select_image) {
+                die("Query" . mysqli_error($connection));
+            }
+        }
+
+        $query = "UPDATE users SET ";
+        $query .= "user_firstname = '{$user_firstname}', ";
+        $query .= "user_lastname = '{$user_lastname}', ";
+        $query .= "user_email = '{$user_email}', ";
+        $query .= "user_image = '{$user_image}', ";
+        $query .= "username = '{$username}', ";
+        $query .= "user_password = '{$user_password}' ";
+        $query .= "WHERE user_id = '{$user_id}' ";
+
+        $update_user = mysqli_query($connection, $query);
+
+        if (!$update_user) {
+            die("failed" . mysqli_error($connection));
+        }
+
+        echo "<p class='bg-success'>Profile Updated!</p>";
+        // header("location: ./users.php");
+    }
     ?>
 
     <div id="page-wrapper">
@@ -106,15 +107,6 @@ if (isset($_POST['update_user'])) {
                         <div class="form-group">
                             <label for="title">Last Name</label>
                             <input type="text" class="form-control" name="user_lastname" value="<?php echo  $user_lastname; ?>">
-                        </div>
-
-                        <div class="form-group">
-                            <select name="role" id="">
-                                <option value="subscriber">Select Role</option>
-                                <option value="admin">Admin</option>
-                                <option value="subscriber">Subscriber</option>
-
-                            </select>
                         </div>
 
                         <!-- <div class="form-group">
@@ -155,7 +147,7 @@ if (isset($_POST['update_user'])) {
 
                         <div class="form-group">
                             <label for="tags">Password</label>
-                            <input type="password" class="form-control" name="user_password" value="<?php echo $user_password; ?>">
+                            <input autocomplete="off" type="password" class="form-control" name="user_password">
                         </div>
 
                         <div class="form-group">

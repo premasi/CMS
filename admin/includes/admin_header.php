@@ -2,6 +2,7 @@
 include "../includes/db.php";
 ob_start();
 session_start();
+include "./includes/function.php";
 ?>
 
 <!DOCTYPE html>

@@ -22,11 +22,14 @@ if (isset($_POST['submit'])) {
 
         $query = "SELECT randsalt FROM users";
         $select_randsalt = mysqli_query($connection, $query);
+        
+        //crypt
+        $password = password_hash($password, PASSWORD_BCRYPT, array('cost'=>12));
 
         //menambil salt dari kolom database
-        $row = mysqli_fetch_assoc($select_randsalt);
-        $salt = $row['randsalt'];
-        $password = crypt($password, $salt);
+        // $row = mysqli_fetch_assoc($select_randsalt);
+        // $salt = $row['randsalt'];
+        // $password = crypt($password, $salt);
 
         //cara lain
         // $hashformat = "2y$10$";

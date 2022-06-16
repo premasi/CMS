@@ -54,30 +54,39 @@ if (isset($_GET['u_id'])) {
             }
         }
 
-        $query = "SELECT randsalt FROM users";
-        $select_randsalt = mysqli_query($connection, $query);
-        $row = mysqli_fetch_array($select_randsalt);
-        $salt = $row['randsalt'];
-        $password = crypt($user_password, $salt);
+        if (empty($user_password)) {
+            echo "<script>alert('Password field cannot be empty')</script>";
+            // header("location: ./users.php");
+        } else {
+
+            // verifikasi cara 1
+            // $query = "SELECT randsalt FROM users";
+            // $select_randsalt = mysqli_query($connection, $query);
+            // $row = mysqli_fetch_array($select_randsalt);
+            // $salt = $row['randsalt'];
+            // $password = crypt($user_password, $salt);
+
+            $password = password_hash($user_password, PASSWORD_BCRYPT, array('cost' => 12));
 
 
-        $query = "UPDATE users SET ";
-        $query .= "user_firstname = '{$user_firstname}', ";
-        $query .= "user_lastname = '{$user_lastname}', ";
-        $query .= "role = '{$role}', ";
-        $query .= "user_email = '{$user_email}', ";
-        $query .= "user_image = '{$user_image}', ";
-        $query .= "username = '{$username}', ";
-        $query .= "user_password = '{$password}' ";
-        $query .= "WHERE user_id = '{$user_id_get}' ";
+            $query = "UPDATE users SET ";
+            $query .= "user_firstname = '{$user_firstname}', ";
+            $query .= "user_lastname = '{$user_lastname}', ";
+            $query .= "role = '{$role}', ";
+            $query .= "user_email = '{$user_email}', ";
+            $query .= "user_image = '{$user_image}', ";
+            $query .= "username = '{$username}', ";
+            $query .= "user_password = '{$password}' ";
+            $query .= "WHERE user_id = '{$user_id_get}' ";
 
-        $update_user = mysqli_query($connection, $query);
+            $update_user = mysqli_query($connection, $query);
 
-        if (!$update_user) {
-            die("failed" . mysqli_error($connection));
+            if (!$update_user) {
+                die("failed" . mysqli_error($connection));
+            }
+            echo "<p class='bg-success'>Account Updated : <a href='users.php'>Edit More Account</a></p>";
+            //header("location: ./users.php");
         }
-
-        header("location: ./users.php");
     }
 }
 
@@ -152,7 +161,7 @@ if (isset($_GET['u_id'])) {
 
     <div class="form-group">
         <label for="tags">Password</label>
-        <input type="password" class="form-control" name="user_password" value="">
+        <input autocomplete="off" type="password" class="form-control" name="user_password" value="">
         <label for="tags"><small>Input new password</small></label>
     </div>
 

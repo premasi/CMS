@@ -12,10 +12,12 @@ if(isset($_POST['create_user'])){
     $username = $_POST['username'];
     $user_password = $_POST['user_password'];
 
-    $hashformat = "2y$10$";
-    $salt = "willyoumarrymeyeahjust";
-    $hash_and_salt = $hashformat . $salt;
-    $password = crypt($user_password, $hash_and_salt);
+    // $hashformat = "2y$10$";
+    // $salt = "willyoumarrymeyeahjust";
+    // $hash_and_salt = $hashformat . $salt;
+    // $password = crypt($user_password, $hash_and_salt);
+
+    $password = password_hash($user_password, PASSWORD_BCRYPT, array('cost' => 12) );
     
     //tanggal
     //$post_date = date('d-m-y');
@@ -28,11 +30,10 @@ if(isset($_POST['create_user'])){
 
     $create_user_query = mysqli_query($connection, $query);
 
-    include "function.php";
     #check query
     checkQuery($create_user_query);
 
-    echo "User created!";
+    echo "<p class='bg-success'>Account Created! : <a href='users.php'>View Account</a></p>";
 }
 
 

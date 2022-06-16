@@ -27,13 +27,22 @@ if(isset($_POST['login'])){
         $role = $row['role'];
     }
 
-    $password = crypt($password, $user_password);
+    // verifikasi cara 1
+    // $password = crypt($password, $user_password);
 
-    if($username !== $user_username && $password !== $user_password){
-        header("location: ../index.php");
-    } else {
+    // if($username !== $user_username && $password !== $user_password){
+    //     header("location: ../index.php");
+    // } else {
+    //     $_SESSION['user_id'] = $user_id;
+    //     header("location: ../admin/index.php");
+    // }
+    
+    // verifikasi cara 2
+    if(password_verify($password, $user_password)){
         $_SESSION['user_id'] = $user_id;
-        header("location: ../admin/index.php");
+        header("location: ../admin/index.php");        
+    } else {
+        header("location: ../index.php");
     }
 }
 
