@@ -23,7 +23,6 @@ if (isset($_POST['create_post'])) {
 
     $create_post_query = mysqli_query($connection, $query);
 
-    include "function.php";
     #check query
     checkQuery($create_post_query);
 
@@ -44,6 +43,7 @@ if (isset($_POST['create_post'])) {
     </div>
 
     <div class="form-group">
+        <label for="category_id">Category</label>
         <select name="category_id" id="category_id">
             <?php
             $query = "SELECT * FROM categories ";
@@ -63,9 +63,19 @@ if (isset($_POST['create_post'])) {
         </select>
     </div>
 
+    <?php 
+    $user_id = $_SESSION['user_id'];
+    $query = "SELECT username FROM users WHERE user_id = $user_id";
+    $get_query = mysqli_query($connection, $query);
+    $row = mysqli_fetch_assoc($get_query);
+    $username = $row['username'];
+    
+    
+    ?>
+
     <div class="form-group">
         <label for="author">Author</label>
-        <input type="text" class="form-control" name="author">
+        <input type="text" class="form-control" name="author" value="<?php echo $username;?>" readonly>
     </div>
 
     <div class="form-group">
