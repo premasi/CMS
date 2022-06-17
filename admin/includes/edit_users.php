@@ -1,37 +1,37 @@
 <?php
 
 if (isset($_GET['u_id'])) {
-    $user_id_get = $_GET['u_id'];
+    $user_id_get = escape($_GET['u_id']);
 
     $query = "SELECT * FROM users WHERE user_id = $user_id_get ";
     $select_user_id = mysqli_query($connection, $query);
 
     while ($row = mysqli_fetch_assoc($select_user_id)) {
-        $user_id = $row['user_id'];
-        $username = $row['username'];
-        $userpass = $row['user_password'];
-        $userfirst = $row['user_firstname'];
-        $userlast = $row['user_lastname'];
-        $user_email = $row['user_email'];
-        $user_image = $row['user_image'];
-        $role = $row['role'];
+        $user_id =  escape($row['user_id']);
+        $username =  escape($row['username']);
+        $userpass =  escape($row['user_password']);
+        $userfirst =  escape($row['user_firstname']);
+        $userlast =  escape($row['user_lastname']);
+        $user_email =  escape($row['user_email']);
+        $user_image =  escape($row['user_image']);
+        $role =  escape($row['role']);
     }
 
 
 
     if (isset($_POST['update_user'])) {
 
-        $user_firstname = $_POST['user_firstname'];
-        $user_lastname = $_POST['user_lastname'];
-        $role = $_POST['role'];
-        $user_email = $_POST['user_email'];
+        $user_firstname = escape($_POST['user_firstname']);
+        $user_lastname = escape($_POST['user_lastname']);
+        $role = escape($_POST['role']);
+        $user_email = escape($_POST['user_email']);
 
         //upload file
         $user_image = $_FILES['image']['name'];
         $user_image_temp = $_FILES['image']['tmp_name']; //diupload melalui temporary setelah disimpin di temp
 
-        $username = $_POST['username'];
-        $user_password = $_POST['user_password'];
+        $username = escape($_POST['username']);
+        $user_password = escape($_POST['user_password']);
 
         //tanggal
         //$post_date = date('d-m-y');

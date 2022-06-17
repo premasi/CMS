@@ -1,3 +1,4 @@
+
 <div class="col-md-4">
 
 
@@ -45,8 +46,8 @@
                 $select_all_category = mysqli_query($connection, $query);
                 
                 while($row = mysqli_fetch_assoc($select_all_category)){
-                    $show_id = $row['cat_id'];
-                    $show_cat = $row['cat_title'];
+                    $show_id = escape($row['cat_id']);
+                    $show_cat = escape($row['cat_title']);
 
                     echo "<li><a href='category.php?cat_id={$show_id}'>{$show_cat}</a></li>";
                 }

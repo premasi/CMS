@@ -1,16 +1,16 @@
 <?php
 if (isset($_POST['create_post'])) {
-    $post_title = $_POST['title'];
-    $post_cat_id = $_POST['category_id'];
-    $post_author = $_POST['author'];
-    $post_status = $_POST['status'];
+    $post_title = escape($_POST['title']);
+    $post_cat_id = escape($_POST['category_id']);
+    $post_author = escape($_POST['author']);
+    $post_status = escape($_POST['status']);
 
     //upload file
     $post_image = $_FILES['image']['name'];
     $post_image_temp = $_FILES['image']['tmp_name']; //diupload melalui temporary setelah disimpin di temp
 
-    $post_tags = $_POST['tags'];
-    $post_content = $_POST['content'];
+    $post_tags = escape($_POST['tags']);
+    $post_content = escape($_POST['content']);
 
     //tanggal
     $post_date = date('d-m-y');
@@ -18,18 +18,23 @@ if (isset($_POST['create_post'])) {
 
     move_uploaded_file($post_image_temp, "../images/$post_image");
 
-    $query = "INSERT INTO posts (post_category_id, post_title, post_author, post_date, post_images, post_content, post_tag, post_status) ";
-    $query .= "VALUES({$post_cat_id}, '{$post_title}', '{$post_author}', now(), '{$post_image}', '{$post_content}', '{$post_tags}', '{$post_status}')";
+    if (empty($post_title) || empty($post_status)) {
+        echo "<p class='bg-danger'>Title and status cannot be empty</p>";
+    } else {
 
-    $create_post_query = mysqli_query($connection, $query);
+        $query = "INSERT INTO posts (post_category_id, post_title, post_author, post_date, post_images, post_content, post_tag, post_status) ";
+        $query .= "VALUES({$post_cat_id}, '{$post_title}', '{$post_author}', now(), '{$post_image}', '{$post_content}', '{$post_tags}', '{$post_status}')";
 
-    #check query
-    checkQuery($create_post_query);
+        $create_post_query = mysqli_query($connection, $query);
 
-    //berfungsi untuk mengambil id terakhir yang dibuat pada database
-    $post_id_get = mysqli_insert_id($connection);
+        #check query
+        checkQuery($create_post_query);
 
-    echo "<p class='bg-success'>Post Created : <a href='../post.php?p_id={$post_id_get}'>View Post</a> or <a href='posts.php'>Edit More Post</a></p>";
+        //berfungsi untuk mengambil id terakhir yang dibuat pada database
+        $post_id_get = mysqli_insert_id($connection);
+
+        echo "<p class='bg-success'>Post Created : <a href='../post.php?p_id={$post_id_get}'>View Post</a> or <a href='posts.php'>Add More Post</a></p>";
+    }
 }
 
 
@@ -45,6 +50,7 @@ if (isset($_POST['create_post'])) {
     <div class="form-group">
         <label for="category_id">Category</label>
         <select name="category_id" id="category_id">
+            <option value=''>Select Category</option>
             <?php
             $query = "SELECT * FROM categories ";
             $select_categories_edit = mysqli_query($connection, $query);
@@ -63,19 +69,19 @@ if (isset($_POST['create_post'])) {
         </select>
     </div>
 
-    <?php 
+    <?php
     $user_id = $_SESSION['user_id'];
     $query = "SELECT username FROM users WHERE user_id = $user_id";
     $get_query = mysqli_query($connection, $query);
     $row = mysqli_fetch_assoc($get_query);
     $username = $row['username'];
-    
-    
+
+
     ?>
 
     <div class="form-group">
         <label for="author">Author</label>
-        <input type="text" class="form-control" name="author" value="<?php echo $username;?>" readonly>
+        <input type="text" class="form-control" name="author" value="<?php echo $username; ?>" readonly>
     </div>
 
     <div class="form-group">

@@ -25,14 +25,14 @@ include "./includes/admin_header.php";
                         <!-- get firstname and lastname -->
                         <?php
                         if (isset($_SESSION['user_id'])) {
-                            $user_id = $_SESSION['user_id'];
+                            $user_id = escape($_SESSION['user_id']);
                             $query = "SELECT * FROM users WHERE user_id = $user_id";
                             $select_user = mysqli_query($connection, $query);
 
                             while ($row = mysqli_fetch_array($select_user)) {
-                                $firstname = $row['user_firstname'];
-                                $lastname = $row['user_lastname'];
-                                $role = $row['role'];
+                                $firstname = escape($row['user_firstname']);
+                                $lastname = escape($row['user_lastname']);
+                                $role = escape($row['role']);
                             }
 
                             if ($role !== 'admin') {

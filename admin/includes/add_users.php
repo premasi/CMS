@@ -1,16 +1,16 @@
 <?php 
 if(isset($_POST['create_user'])){
-    $user_firstname = $_POST['user_firstname'];
-    $user_lastname = $_POST['user_lastname'];
-    $role = $_POST['role'];
-    $user_email = $_POST['user_email'];
+    $user_firstname = escape($_POST['user_firstname']);
+    $user_lastname = escape($_POST['user_lastname']);
+    $role = escape($_POST['role']);
+    $user_email = escape($_POST['user_email']);
 
     //upload file
     $user_image = $_FILES['image']['name']; 
     $user_image_temp = $_FILES['image']['tmp_name']; //diupload melalui temporary setelah disimpin di temp
 
-    $username = $_POST['username'];
-    $user_password = $_POST['user_password'];
+    $username = escape($_POST['username']);
+    $user_password = escape($_POST['user_password']);
 
     // $hashformat = "2y$10$";
     // $salt = "willyoumarrymeyeahjust";

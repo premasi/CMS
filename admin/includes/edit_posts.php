@@ -7,34 +7,34 @@ if (isset($_GET['p_id'])) {
     $select_posts_id = mysqli_query($connection, $query);
 
     while ($row = mysqli_fetch_assoc($select_posts_id)) {
-        $post_id = $row['post_id'];
-        $post_title = $row['post_title'];
-        $post_author = $row['post_author'];
-        $post_cat = $row['post_category_id'];
-        $post_status = $row['post_status'];
-        $post_images = $row['post_images'];
-        $post_tags = $row['post_tag'];
-        $post_comment = $row['post_comment_count'];
-        $post_date = $row['post_date'];
-        $post_content = $row['post_content'];
+        $post_id =  escape($row['post_id']);
+        $post_title =  escape($row['post_title']);
+        $post_author =  escape($row['post_author']);
+        $post_cat =  escape($row['post_category_id']);
+        $post_status =  escape($row['post_status']);
+        $post_images =  escape($row['post_images']);
+        $post_tags =  escape($row['post_tag']);
+        $post_comment =  escape($row['post_comment_count']);
+        $post_date =  escape($row['post_date']);
+        $post_content =  escape($row['post_content']);
     }
 
     if (isset($_POST['update_post'])) {
 
-        $post_title = $_POST['title'];
-        $post_cat_id = $_POST['post_category'];
-        $post_author = $_POST['author'];
-        $post_status = $_POST['status'];
+        $post_title = escape($_POST['title']);
+        $post_cat_id = escape($_POST['post_category']);
+        $post_author = escape($_POST['author']);
+        $post_status = escape($_POST['status']);
 
         //upload file
         $post_images = $_FILES['image']['name'];
         $post_image_temp = $_FILES['image']['tmp_name']; //diupload melalui temporary setelah disimpin di temp
 
-        $post_tags = $_POST['tags'];
-        $post_content = $_POST['content'];
+        $post_tags = escape($_POST['tags']);
+        $post_content = escape($_POST['content']);
 
         $post_date = date('d-m-y');
-        $comment_count = 4;
+        //$comment_count = 4;
 
 
         move_uploaded_file($post_image_temp, "../images/$post_images");
@@ -54,27 +54,29 @@ if (isset($_GET['p_id'])) {
             }
         }
 
-        $query = "UPDATE posts SET ";
-        $query .= "post_title = '{$post_title}', ";
-        $query .= "post_category_id = '{$post_cat_id}', ";
-        $query .= "post_date = now(), ";
-        $query .= "post_author = '{$post_author}', ";
-        $query .= "post_images = '{$post_images}', ";
-        $query .= "post_tag = '{$post_tags}', ";
-        $query .= "post_content = '{$post_content}', ";
-        $query .= "post_status = '{$post_status}' WHERE post_id = '{$post_id_get}' ";
+        if (empty($post_title) || empty($post_status)) {
+            echo "<p class='bg-danger'>Title and status cannot be empty</p>";
+        } else {
 
-        $update_post = mysqli_query($connection, $query);
+            $query = "UPDATE posts SET ";
+            $query .= "post_title = '{$post_title}', ";
+            $query .= "post_category_id = '{$post_cat_id}', ";
+            $query .= "post_date = now(), ";
+            $query .= "post_author = '{$post_author}', ";
+            $query .= "post_images = '{$post_images}', ";
+            $query .= "post_tag = '{$post_tags}', ";
+            $query .= "post_content = '{$post_content}', ";
+            $query .= "post_status = '{$post_status}' WHERE post_id = '{$post_id_get}' ";
 
-        if (!$update_post) {
-            die("failed" . mysqli_error($connection));
+            $update_post = mysqli_query($connection, $query);
+
+            if (!$update_post) {
+                die("failed" . mysqli_error($connection));
+            }
+
+            echo "<p class='bg-success'>Post Updated : <a href='../post.php?p_id={$post_id_get}'>View Post</a> or <a href='posts.php'>Edit More Post</a></p>";
+            // header("location: ./posts.php");
         }
-
-        echo "<p class='bg-success'>Post Updated : <a href='../post.php?p_id={$post_id_get}'>View Post</a> or <a href='posts.php'>Edit More Post</a></p>";
-        // header("location: ./posts.php");
-
-
-
     }
 }
 
@@ -97,8 +99,8 @@ if (isset($_GET['p_id'])) {
             //checkQuery($select_categories_edit);
 
             while ($row = mysqli_fetch_assoc($select_categories_edit)) {
-                $cat_id = $row['cat_id'];
-                $cat_title = $row['cat_title'];
+                $cat_id =  escape($row['cat_id']);
+                $cat_title =  escape($row['cat_title']);
 
                 echo "<option value='$cat_id'>$cat_title</option>";
             }

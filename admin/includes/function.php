@@ -1,5 +1,10 @@
 <?php
 
+function escape($string){
+    global $connection;
+    return mysqli_real_escape_string($connection, trim($string));
+}
+
 function users_online()
 {
     if (isset($_GET['onlineusers'])) {
@@ -52,7 +57,7 @@ function insert_categories()
     global $connection;
 
     if ($submit) {
-        $cat_title = $_POST["cat_title"];
+        $cat_title =  escape($_POST["cat_title"]);
         $cat_title = mysqli_real_escape_string($connection, $cat_title);
         if ($cat_title == "" || empty($cat_title) || strlen($cat_title) < 4) {
             echo "Must be longer than 4";
@@ -95,7 +100,7 @@ function delete_categories()
     global $connection;
 
     if (isset($_GET['delete'])) {
-        $cat_delete = $_GET['delete'];
+        $cat_delete = escape($_GET['delete']);
 
         $query = "DELETE FROM categories WHERE cat_id = {$cat_delete}";
         $delete_query = mysqli_query($connection, $query);

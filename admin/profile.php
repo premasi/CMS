@@ -2,18 +2,18 @@
 include "./includes/admin_header.php";
 
 if (isset($_SESSION['user_id'])) {
-    $user_id = $_SESSION['user_id'];
+    $user_id = escape($_SESSION['user_id']);
 
     $query = "SELECT * FROM users WHERE user_id = $user_id";
     $select_user = mysqli_query($connection, $query);
 
     while ($row = mysqli_fetch_assoc($select_user)) {
-        $user_firstname = $row['user_firstname'];
-        $user_lastname = $row['user_lastname'];
-        $user_email = $row['user_email'];
-        $username = $row['username'];
-        $user_password = $row['user_password'];
-        $user_image = $row['user_image'];
+        $user_firstname = escape($row['user_firstname']);
+        $user_lastname = escape($row['user_lastname']);
+        $user_email = escape($row['user_email']);
+        $username = escape($row['username']);
+        $user_password = escape($row['user_password']);
+        $user_image = escape($row['user_image']);
     }
 }
 ?>
@@ -34,16 +34,16 @@ if (isset($_SESSION['user_id'])) {
     <?php
     if (isset($_POST['update_user'])) {
 
-        $user_firstname = $_POST['user_firstname'];
-        $user_lastname = $_POST['user_lastname'];
-        $user_email = $_POST['user_email'];
+        $user_firstname = escape($_POST['user_firstname']);
+        $user_lastname = escape($_POST['user_lastname']);
+        $user_email = escape($_POST['user_email']);
 
         //upload file
         $user_image = $_FILES['image']['name'];
         $user_image_temp = $_FILES['image']['tmp_name']; //diupload melalui temporary setelah disimpin di temp
 
-        $username = $_POST['username'];
-        $user_password = $_POST['user_password'];
+        $username = escape($_POST['username']);
+        $user_password = escape($_POST['user_password']);
 
         //tanggal
         //$post_date = date('d-m-y');

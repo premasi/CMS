@@ -3,6 +3,12 @@ include "db.php";
 
 session_start();
 
+function escapeLogin($string){
+    global $connection;
+    return mysqli_real_escape_string($connection, trim($string));
+}
+
+
 if(isset($_POST['login'])){
     global $connection;
 
@@ -19,12 +25,12 @@ if(isset($_POST['login'])){
     }
 
     while($row = mysqli_fetch_array($select_user)){
-        $user_id = $row['user_id'];
-        $user_username = $row['username'];
-        $user_password = $row['user_password'];
-        $user_firstname = $row['user_firstname'];
-        $user_lastname = $row['user_lastname'];
-        $role = $row['role'];
+        $user_id = escapeLogin($row['user_id']);
+        $user_username = escapeLogin($row['username']);
+        $user_password = escapeLogin($row['user_password']);
+        $user_firstname = escapeLogin($row['user_firstname']);
+        $user_lastname = escapeLogin($row['user_lastname']);
+        $role = escapeLogin($row['role']);
     }
 
     // verifikasi cara 1

@@ -22,7 +22,7 @@ include "./includes/navigation.php";
                 <?php 
 
                 if(isset($_POST['submit'])){
-                $search = $_POST['search'];
+                $search = escape($_POST['search']);
 
                 $query = "SELECT * FROM posts WHERE post_title LIKE '%$search%' ";
                 $query .= "|| post_tag LIKE '%$search%'";
@@ -38,10 +38,11 @@ include "./includes/navigation.php";
                 } else {
     
                     while($row = mysqli_fetch_assoc($result)){
-                        $show_post_title = $row['post_title'];
-                        $show_post_author = $row['post_author'];
-                        $show_post_date = $row['post_date'];
-                        $show_post_content = $row['post_content'];
+                        $show_post_title = escape($row['post_title']);
+                        $show_post_author = escape($row['post_author']);
+                        $show_post_date = escape($row['post_date']);
+                        $show_post_content = escape($row['post_content']);
+                        $show_post_image = escape($row['post_images'])
                     ?>
     
                     <h1 class="page-header">
@@ -58,7 +59,7 @@ include "./includes/navigation.php";
                     </p>
                     <p><span class="glyphicon glyphicon-time"></span><?php echo $show_post_date ?></p>
                     <hr>
-                    <img class="img-responsive" src="http://placehold.it/900x300" alt="">
+                    <img class="img-responsive" src="./images/<?php echo $show_post_image ?>" alt="">
                     <hr>
                     <p><?php echo $show_post_content ?></p>
                     <a class="btn btn-primary" href="#">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>

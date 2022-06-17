@@ -22,7 +22,7 @@ include "./includes/navigation.php";
         <div class="col-md-8">
             <?php
             if (isset($_GET['p_id'])) {
-                $post_id = $_GET['p_id'];
+                $post_id = escape($_GET['p_id']);
 
                 $view_query = "UPDATE posts SET post_views_count = post_views_count + 1 WHERE post_id = $post_id";
                 $send_view_query = mysqli_query($connection, $view_query);
@@ -31,11 +31,11 @@ include "./includes/navigation.php";
                 $select_all_post = mysqli_query($connection, $query);
 
                 while ($row = mysqli_fetch_assoc($select_all_post)) {
-                    $show_post_title = $row['post_title'];
-                    $show_post_author = $row['post_author'];
-                    $show_post_date = $row['post_date'];
-                    $show_image = $row['post_images'];
-                    $show_post_content = $row['post_content'];
+                    $show_post_title = escape($row['post_title']);
+                    $show_post_author = escape($row['post_author']);
+                    $show_post_date = escape($row['post_date']);
+                    $show_image = escape($row['post_images']);
+                    $show_post_content = escape($row['post_content']);
             ?>
 
                     <h1 class="page-header">
@@ -45,12 +45,12 @@ include "./includes/navigation.php";
 
                     <?php
                     if (isset($_SESSION['user_id'])) {
-                        $user_id = $_SESSION['user_id'];
+                        $user_id = escape($_SESSION['user_id']);
                         $query = "SELECT role FROM users WHERE user_id = $user_id";
                         $role = mysqli_query($connection, $query);
 
                         while ($row = mysqli_fetch_assoc($role)) {
-                            $get_role = $row['role'];
+                            $get_role = escape($row['role']);
 
                             if ($get_role === "admin") {
 
@@ -87,10 +87,10 @@ include "./includes/navigation.php";
 
                 <?php
                 if (isset($_POST['create_comment'])) {
-                    $post_id = $_GET['p_id'];
-                    $comment_author = $_POST['comment_author'];
-                    $comment_email = $_POST['comment_email'];
-                    $comment_content = $_POST['comment_content'];
+                    $post_id = escape($_GET['p_id']);
+                    $comment_author = escape($_POST['comment_author']);
+                    $comment_email = escape($_POST['comment_email']);
+                    $comment_content = escape($_POST['comment_content']);
 
                     if (empty($comment_author) || empty($comment_email) || empty($comment_content)) {
                         echo "<script>alert('Field cannot be empty')</script>";
@@ -143,9 +143,9 @@ include "./includes/navigation.php";
                     die("Failed " . mysqli_error($connection));
                 }
                 while ($row = mysqli_fetch_array($show_comment)) {
-                    $comment_author = $row['comment_author'];
-                    $comment_date = $row['comment_date'];
-                    $comment_content = $row['comment_content'];
+                    $comment_author = escape($row['comment_author']);
+                    $comment_date = escape($row['comment_date']);
+                    $comment_content = escape($row['comment_content']);
 
                 ?>
 

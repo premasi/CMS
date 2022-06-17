@@ -20,7 +20,7 @@ include "./includes/navigation.php";
         <div class="col-md-8">
             <?php
             if (isset($_GET['page'])) {
-                $page = $_GET['page'];
+                $page = escape($_GET['page']);
             } else {
                 $page = "";
             }
@@ -41,13 +41,13 @@ include "./includes/navigation.php";
             $select_all_post = mysqli_query($connection, $query);
 
             while ($row = mysqli_fetch_assoc($select_all_post)) {
-                $show_post_id = $row['post_id'];
-                $show_post_title = $row['post_title'];
-                $show_post_author = $row['post_author'];
-                $show_post_date = $row['post_date'];
-                $show_image = $row['post_images'];
-                $show_post_content = substr($row['post_content'], 0, 100);
-                $post_status = $row['post_status'];
+                $show_post_id = escape($row['post_id']);
+                $show_post_title = escape($row['post_title']);
+                $show_post_author = escape($row['post_author']);
+                $show_post_date = escape($row['post_date']);
+                $show_image = escape($row['post_images']);
+                $show_post_content = escape(substr($row['post_content'], 0, 100));
+                $post_status = escape($row['post_status']);
 
             ?>
 

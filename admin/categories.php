@@ -36,7 +36,7 @@ include "./includes/admin_header.php";
 
                         <?php //update query and include function
                         if(isset($_GET['update'])){
-                            $cat_id = $_GET['update'];
+                            $cat_id = escape($_GET['update']);
 
                             include "./includes/update_categories.php";
                         }

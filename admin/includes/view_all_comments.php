@@ -2,7 +2,7 @@
 
 if (isset($_POST['checkBoxesArray'])) {
     foreach ($_POST['checkBoxesArray'] as $checkBoxesValues) {
-        $bulk_option = $_POST['bulk_option'];
+        $bulk_option = escape($_POST['bulk_option']);
 
         switch ($bulk_option) {
             case 'approved':
@@ -61,13 +61,13 @@ if (isset($_POST['checkBoxesArray'])) {
                 $comment_posts = mysqli_query($connection, $query);
 
                 while ($row = mysqli_fetch_assoc($comment_posts)) {
-                    $comment_id = $row['comment_id'];
-                    $comment_author = $row['comment_author'];
-                    $comment_content = $row['comment_content'];
-                    $comment_email = $row['comment_email'];
-                    $comment_status = $row['comment_status'];
-                    $post_comment = $row['comment_post_id'];
-                    $comment_date = $row['comment_date'];
+                    $comment_id =  escape($row['comment_id']);
+                    $comment_author =  escape($row['comment_author']);
+                    $comment_content =  escape($row['comment_content']);
+                    $comment_email =  escape($row['comment_email']);
+                    $comment_status =  escape($row['comment_status']);
+                    $post_comment =  escape($row['comment_post_id']);
+                    $comment_date =  escape($row['comment_date']);
 
                 ?>
                     <tr>
@@ -82,8 +82,8 @@ if (isset($_POST['checkBoxesArray'])) {
                         $select_posts_id = mysqli_query($connection, $query);
 
                         while ($row = mysqli_fetch_assoc($select_posts_id)) {
-                            $post_id = $row['post_id'];
-                            $post_title = $row['post_title'];
+                            $post_id =  escape($row['post_id']);
+                            $post_title =  escape($row['post_title']);
                         ?>
                             <td><a href="../post.php?p_id=<?php echo $post_id;    ?>"><?php echo $post_title;    ?></a></td>
                         <?php
@@ -99,30 +99,70 @@ if (isset($_POST['checkBoxesArray'])) {
                 <?php
                 //approve comments
                 if (isset($_GET['approve'])) {
-                    $comment_id_update = $_GET['approve'];
+                    $comment_id_update = escape($_GET['approve']);
+                    $comment_id_update = mysqli_real_escape_string($connection,  $_GET['approve']);
 
-                    $query = "UPDATE comments SET comment_status = 'approved' WHERE comment_id = $comment_id_update ";
-                    $approve_query = mysqli_query($connection, $query);
-                    header("location: ./comments.php");
+                    $user_id = escape($_SESSION['user_id']);
+                    $user_id = mysqli_real_escape_string($connection,  $_SESSION['user_id']);
+
+                    if (isset($user_id)) {
+                        $query = "SELECT role FROM users WHERE user_id = $user_id";
+                        $get_role = mysqli_query($connection, $query);
+                        $row = mysqli_fetch_assoc($get_role);
+                        $role =  escape($row['role']);
+
+                        if ($role === "admin") {
+
+                            $query = "UPDATE comments SET comment_status = 'approved' WHERE comment_id = $comment_id_update ";
+                            $approve_query = mysqli_query($connection, $query);
+                            header("location: ./comments.php");
+                        }
+                    }
                 }
 
                 //unapprove comments
                 if (isset($_GET['unapprove'])) {
-                    $comment_id_update = $_GET['unapprove'];
+                    $comment_id_update = escape($_GET['unapprove']);
+                    $comment_id_update = mysqli_real_escape_string($connection,  $_GET['unapprove']);
 
-                    $query = "UPDATE comments SET comment_status = 'unapproved' WHERE comment_id = $comment_id_update ";
-                    $unapprove_query = mysqli_query($connection, $query);
-                    header("location: ./comments.php");
+                    $user_id = escape($_SESSION['user_id']);
+                    $user_id = mysqli_real_escape_string($connection, $_SESSION['user_id']);
+                    if (isset($user_id)) {
+                        $query = "SELECT role FROM users WHERE user_id = $user_id";
+                        $get_role = mysqli_query($connection, $query);
+                        $row = mysqli_fetch_assoc($get_role);
+                        $role =  escape($row['role']);
+
+                        if ($role === "admin") {
+
+                            $query = "UPDATE comments SET comment_status = 'unapproved' WHERE comment_id = $comment_id_update ";
+                            $unapprove_query = mysqli_query($connection, $query);
+                            header("location: ./comments.php");
+                        }
+                    }
                 }
 
 
                 //delete comment
                 if (isset($_GET['delete'])) {
-                    $comment_id_delete = $_GET['delete'];
+                    $comment_id_delete = escape($_GET['delete']);
+                    $comment_id_delete = mysqli_real_escape_string($connection, $_GET['delete']);
 
-                    $query = "DELETE FROM comments WHERE comment_id = $comment_id_delete ";
-                    $delete_query = mysqli_query($connection, $query);
-                    header("location: ./comments.php");
+                    $user_id = $_SESSION['user_id'];
+                    $user_id = mysqli_real_escape_string($connection, $_SESSION['user_id']);
+                    if (isset($user_id)) {
+                        $query = "SELECT role FROM users WHERE user_id = $user_id";
+                        $get_role = mysqli_query($connection, $query);
+                        $row = mysqli_fetch_assoc($get_role);
+                        $role =  escape($row['role']);
+
+                        if ($role === "admin") {
+
+                            $query = "DELETE FROM comments WHERE comment_id = $comment_id_delete ";
+                            $delete_query = mysqli_query($connection, $query);
+                            header("location: ./comments.php");
+                        }
+                    }
                 }
 
                 ?>

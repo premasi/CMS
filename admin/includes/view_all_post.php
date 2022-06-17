@@ -2,7 +2,7 @@
 
 if (isset($_POST['checkBoxesArray'])) {
     foreach ($_POST['checkBoxesArray'] as $checkBoxesValues) {
-        $bulk_option = $_POST['bulk_option'];
+        $bulk_option = escape($_POST['bulk_option']);
 
         switch ($bulk_option) {
             case 'published':
@@ -91,16 +91,16 @@ if (isset($_POST['checkBoxesArray'])) {
             $select_posts = mysqli_query($connection, $query);
 
             while ($row = mysqli_fetch_assoc($select_posts)) {
-                $post_id = $row['post_id'];
-                $post_title = $row['post_title'];
-                $post_author = $row['post_author'];
-                $post_cat = $row['post_category_id'];
-                $post_status = $row['post_status'];
-                $post_images = $row['post_images'];
-                $post_tags = $row['post_tag'];
+                $post_id =  escape($row['post_id']);
+                $post_title =  escape($row['post_title']);
+                $post_author =  escape($row['post_author']);
+                $post_cat =  escape($row['post_category_id']);
+                $post_status =  escape($row['post_status']);
+                $post_images =  escape($row['post_images']);
+                $post_tags =  escape($row['post_tag']);
                 //$post_comment = $row['post_comment_count'];
-                $post_date = $row['post_date'];
-                $post_view = $row['post_views_count'];
+                $post_date =  escape($row['post_date']);
+                $post_view = escape( $row['post_views_count']);
 
             ?>
                 <tr>
@@ -114,8 +114,8 @@ if (isset($_POST['checkBoxesArray'])) {
                     $select_categories_id = mysqli_query($connection, $query);
 
                     while ($row = mysqli_fetch_assoc($select_categories_id)) {
-                        $cat_id = $row['cat_id'];
-                        $cat_title = $row['cat_title'];
+                        $cat_id =  escape($row['cat_id']);
+                        $cat_title =  escape($row['cat_title']);
                     ?>
                         <td><?php echo $cat_title    ?></td>
                     <?php
@@ -148,11 +148,28 @@ if (isset($_POST['checkBoxesArray'])) {
 
             <?php //delete post
             if (isset($_GET['delete'])) {
-                $post_id_delete = $_GET['delete'];
+                $post_id_delete = escape($_GET['delete']);
+                $post_id_delete = mysqli_real_escape_string($connection, $_GET['delete']);
 
-                $query = "DELETE FROM posts WHERE post_id = $post_id_delete ";
-                $delete_query = mysqli_query($connection, $query);
-                header("location: ./posts.php");
+
+                $user_id = escape($_SESSION['user_id']);
+                $user_id = mysqli_real_escape_string($connection, $_SESSION['user_id']);
+
+                if (isset($user_id)) {
+                    $query = "SELECT role FROM users WHERE user_id = $user_id";
+                    $get_role = mysqli_query($connection, $query);
+                    $role = "";
+                    while ($row = mysqli_fetch_assoc($get_role)) {
+                        $role =  escape($row['role']);
+                    }
+
+                    if ($role === "admin") {
+
+                        $query = "DELETE FROM posts WHERE post_id = $post_id_delete ";
+                        $delete_query = mysqli_query($connection, $query);
+                        header("location: ./posts.php");
+                    }
+                }
             }
 
             ?>

@@ -22,18 +22,18 @@ include "./includes/navigation.php";
         <div class="col-md-8">
             <?php
             if (isset($_GET['a_id'])) {
-                $author = $_GET['a_id'];
+                $author = escape($_GET['a_id']);
             }
 
             $query = "SELECT * FROM posts WHERE post_author =  '{$author}' ";
             $select_all_post = mysqli_query($connection, $query);
 
             while ($row = mysqli_fetch_assoc($select_all_post)) {
-                $show_post_title = $row['post_title'];
-                $show_post_author = $row['post_author'];
-                $show_post_date = $row['post_date'];
-                $show_image = $row['post_images'];
-                $show_post_content = $row['post_content'];
+                $show_post_title = escape($row['post_title']);
+                $show_post_author = escape($row['post_author']);
+                $show_post_date = escape($row['post_date']);
+                $show_image = escape($row['post_images']);
+                $show_post_content = escape($row['post_content']);
             ?>
 
                 <h1 class="page-header">
@@ -43,12 +43,12 @@ include "./includes/navigation.php";
 
                 <?php
                 if (isset($_SESSION['user_id'])) {
-                    $user_id = $_SESSION['user_id'];
+                    $user_id = escape($_SESSION['user_id']);
                     $query = "SELECT role FROM users WHERE user_id = $user_id";
                     $role = mysqli_query($connection, $query);
 
                     while ($row = mysqli_fetch_assoc($role)) {
-                        $get_role = $row['role'];
+                        $get_role = escape($row['role']);
 
                         if ($get_role === "admin") {
 
