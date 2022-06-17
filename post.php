@@ -105,8 +105,8 @@ include "./includes/navigation.php";
                             die("Failed " . mysqli_error($connection));
                         }
 
-                        $query_count = "UPDATE posts SET post_comment_count = post_comment_count + 1 WHERE post_id = $post_id ";
-                        $comment_count = mysqli_query($connection, $query_count);
+                        // $query_count = "UPDATE posts SET post_comment_count = post_comment_count + 1 WHERE post_id = $post_id ";
+                        // $comment_count = mysqli_query($connection, $query_count);
                     }
                 }
 

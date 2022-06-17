@@ -98,7 +98,7 @@ if (isset($_POST['checkBoxesArray'])) {
                 $post_status = $row['post_status'];
                 $post_images = $row['post_images'];
                 $post_tags = $row['post_tag'];
-                $post_comment = $row['post_comment_count'];
+                //$post_comment = $row['post_comment_count'];
                 $post_date = $row['post_date'];
                 $post_view = $row['post_views_count'];
 
@@ -125,7 +125,18 @@ if (isset($_POST['checkBoxesArray'])) {
                     <td><?php echo $post_status    ?></td>
                     <td> <?php echo "<img src = '../images/$post_images' alt='$post_title' height = '100px' width = '200px'/>"    ?></td>
                     <td><?php echo $post_tags    ?></td>
-                    <td><?php echo $post_comment    ?></td>
+
+                    <?php
+                    $query = "SELECT * FROM comments WHERE comment_post_id = $post_id";
+                    $get_count = mysqli_query($connection, $query);
+                    $count_comment = mysqli_num_rows($get_count);
+
+
+                    ?>
+
+                    <td><a href="comments.php?source=c_perpost&p_id=<?php echo $post_id;    ?>"><?php echo $count_comment    ?></a></td>
+
+
                     <td><?php echo $post_date    ?></td>
                     <td><?php echo $post_view    ?></td>
                     <td><a href="../post.php?p_id=<?php echo $post_id; ?>" class="btn btn-secondary">Link Post</a></td>

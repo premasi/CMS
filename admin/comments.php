@@ -29,11 +29,8 @@ include "./includes/admin_header.php";
                         }
 
                         switch($source){
-                            case 'add_posts':
-                                include "./includes/add_posts.php";
-                                break;
-                            case 'edit_posts':
-                                include "./includes/edit_posts.php";
+                            case 'c_perpost':
+                                include "./includes/comment_perpost.php";
                                 break;
                             default:
                                 include "./includes/view_all_comments.php";
