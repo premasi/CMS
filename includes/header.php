@@ -1,4 +1,7 @@
-<?php include('./admin/includes/function.php');?>
+<?php 
+include('./admin/includes/function.php');
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 

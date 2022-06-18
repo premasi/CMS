@@ -39,7 +39,8 @@ include "./includes/function.php";
     <link rel="stylesheet" href="css/summernote.css">
     <!-- <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet"> -->
 
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/styles.css">\
+    <script src="js/jquery.js"></script>
 
 </head>
 

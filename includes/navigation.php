@@ -13,14 +13,25 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
+                    <?php 
+                    $contact_class="";
+                    $pagename = basename($_SERVER['PHP_SELF']);
+                    $contact = "contact.php";
+
+                    if($pagename == $contact){
+                        $contact_class="active";
+                    }
+                    
+                    ?>
+
                     <li>
                         <a href="admin">Admin</a>
                     </li>
                     <li>
                         <a href="#">Services</a>
                     </li>
-                    <li>
-                        <a href="#">Contact</a>
+                    <li class="<?php echo $contact_class;?>">
+                        <a href="contact.php">Contact</a>
                     </li>
                 </ul>
             </div>

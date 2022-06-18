@@ -1,5 +1,7 @@
 <?php
 
+include("./includes/delete_modal.php");
+
 if (isset($_POST['checkBoxesArray'])) {
     foreach ($_POST['checkBoxesArray'] as $checkBoxesValues) {
         $bulk_option = escape($_POST['bulk_option']);
@@ -100,7 +102,7 @@ if (isset($_POST['checkBoxesArray'])) {
                 $post_tags =  escape($row['post_tag']);
                 //$post_comment = $row['post_comment_count'];
                 $post_date =  escape($row['post_date']);
-                $post_view = escape( $row['post_views_count']);
+                $post_view = escape($row['post_views_count']);
 
             ?>
                 <tr>
@@ -141,7 +143,8 @@ if (isset($_POST['checkBoxesArray'])) {
                     <td><?php echo $post_view    ?></td>
                     <td><a href="../post.php?p_id=<?php echo $post_id; ?>" class="btn btn-secondary">Link Post</a></td>
                     <td><a href="posts.php?source=edit_posts&p_id=<?php echo $post_id; ?>" class="btn btn-secondary">Edit</a></td>
-                    <td><a onclick="javascript: return confirm('Are you sure?');" href="posts.php?delete=<?php echo $post_id; ?>" class="btn btn-danger">Delete</a></td>
+                    <!-- <td><a onclick="javascript: return confirm('Are you sure?');" href="posts.php?delete=<?php echo $post_id; ?>" class="btn btn-danger">Delete</a></td> -->
+                    <td><a rel="<?php echo $post_id; ?>" href="javascript:void(0)" class="delete_link">Delete</a></td>
                 </tr>
 
             <?php } ?>
@@ -176,3 +179,14 @@ if (isset($_POST['checkBoxesArray'])) {
         </tbody>
     </table>
 </form>
+
+<script>
+    $(document).ready(function() {
+        $(".delete_link").on('click', function() {
+            var id = $(this).attr("rel");
+            var delete_url = "posts.php?delete=" + id + " ";
+            $(".modal_delete_link").attr("href", delete_url);
+            $("#myModal").modal('show');
+        })
+    })
+</script>
