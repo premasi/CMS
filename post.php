@@ -2,7 +2,6 @@
 include "./includes/db.php";
 global $connection;
 include "./includes/header.php";
-session_start();
 
 
 ?>

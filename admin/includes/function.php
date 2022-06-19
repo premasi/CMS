@@ -59,7 +59,18 @@ function insert_categories()
     if ($submit) {
         $cat_title =  escape($_POST["cat_title"]);
         $cat_title = mysqli_real_escape_string($connection, $cat_title);
-        if ($cat_title == "" || empty($cat_title) || strlen($cat_title) < 4) {
+
+        $query = "SELECT * FROM categories WHERE cat_title = '$cat_title'";
+        $get_another_cat = mysqli_query($connection, $query);
+        while($row = mysqli_fetch_assoc($get_another_cat)){
+            $another_title = $row['cat_title'];
+        }
+
+
+
+        if($cat_title == $another_title){
+            echo "Category already created!";
+        } else if ($cat_title == "" || empty($cat_title) || strlen($cat_title) < 4) {
             echo "Must be longer than 4";
         } else {
             $query = "INSERT INTO categories(cat_title) ";
@@ -106,4 +117,11 @@ function delete_categories()
         $delete_query = mysqli_query($connection, $query);
         header("location: ./categories.php");
     }
+}
+
+function countData($table){
+    global $connection;
+    $query = "SELECT * FROM " . $table;
+    $select_post = mysqli_query($connection, $query);
+    return $result = mysqli_num_rows($select_post);
 }

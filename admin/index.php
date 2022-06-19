@@ -72,9 +72,8 @@ include "./includes/admin_header.php";
                                 </div>
                                 <div class="col-xs-9 text-right">
                                     <?php
-                                    $query = "SELECT * FROM posts";
-                                    $select_post = mysqli_query($connection, $query);
-                                    $post_count = mysqli_num_rows($select_post);
+
+                                    $post_count = countData("posts");
 
                                     echo "<div class='huge'>$post_count</div>";
 
@@ -102,9 +101,7 @@ include "./includes/admin_header.php";
                                 </div>
                                 <div class="col-xs-9 text-right">
                                     <?php
-                                    $query = "SELECT * FROM comments";
-                                    $select_comment = mysqli_query($connection, $query);
-                                    $comment_count = mysqli_num_rows($select_comment);
+                                    $comment_count = countData("comments");
                                     echo "<div class='huge'>$comment_count</div>";
 
                                     ?>
@@ -130,9 +127,7 @@ include "./includes/admin_header.php";
                                 </div>
                                 <div class="col-xs-9 text-right">
                                     <?php
-                                    $query = "SELECT * FROM users";
-                                    $select_user = mysqli_query($connection, $query);
-                                    $user_count = mysqli_num_rows($select_user);
+                                    $user_count = countData("users");
                                     echo "<div class='huge'>$user_count</div>";
 
                                     ?>
@@ -158,9 +153,7 @@ include "./includes/admin_header.php";
                                 </div>
                                 <div class="col-xs-9 text-right">
                                     <?php
-                                    $query = "SELECT * FROM categories";
-                                    $select_cat = mysqli_query($connection, $query);
-                                    $cat_count = mysqli_num_rows($select_cat);
+                                    $cat_count = countData("categories");
                                     echo "<div class='huge'>$cat_count</div>";
 
                                     ?>
