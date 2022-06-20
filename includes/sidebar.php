@@ -32,7 +32,7 @@
                     <input name="password" type="password" class="form-control" placeholder="Enter Password">
                 </div>
                 <button type="submit" name="login" class="btn btn-primary" value="Login">Login</button>
-                <a href="registration.php" class="btn btn-secondary ml-1" value="Registration">Register</a>
+                <a href="/course/CMS/registration" class="btn btn-secondary ml-1" value="Registration">Register</a>
             </form>
             <!-- /.input-group -->
         <?php endif; ?>    
@@ -55,7 +55,7 @@
                     $show_id = escape($row['cat_id']);
                     $show_cat = escape($row['cat_title']);
 
-                    echo "<li><a href='category.php?cat_id={$show_id}'>{$show_cat}</a></li>";
+                    echo "<li><a href='/course/CMS/category/{$show_id}'>{$show_cat}</a></li>";
                 }
 
 

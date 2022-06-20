@@ -66,7 +66,7 @@ include "./includes/navigation.php";
                         <a href="#"><?php echo $show_post_title ?></a>
                     </h2>
                     <p class="lead">
-                        by <a href="author.php?a_id=<?php echo $show_post_author ?>"><?php echo $show_post_author ?></a>
+                        by <a href="/course/CMS/author.php?a_id=<?php echo $show_post_author ?>"><?php echo $show_post_author ?></a>
                     </p>
                     <p><span class="glyphicon glyphicon-time"></span><?php echo $show_post_date ?></p>
                     <hr>

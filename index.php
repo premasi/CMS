@@ -62,7 +62,7 @@ include "./includes/navigation.php";
 
                     <!-- First Blog Post -->
                     <h2>
-                        <a href="post.php?p_id=<?php echo $show_post_id ?>"><?php echo $show_post_title ?></a>
+                        <a href="post/<?php echo $show_post_id ?>"><?php echo $show_post_title ?></a>
                     </h2>
                     <p class="lead">
                         by <a href="author.php?a_id=<?php echo $show_post_author ?>"><?php echo $show_post_author ?></a>

@@ -2,8 +2,6 @@
 include "./includes/db.php";
 global $connection;
 include "./includes/header.php";
-session_start();
-
 
 ?>
 
@@ -29,6 +27,7 @@ include "./includes/navigation.php";
             $select_all_post = mysqli_query($connection, $query);
 
             while ($row = mysqli_fetch_assoc($select_all_post)) {
+                $show_post_id = escape($row['post_id']);
                 $show_post_title = escape($row['post_title']);
                 $show_post_author = escape($row['post_author']);
                 $show_post_date = escape($row['post_date']);
@@ -62,7 +61,7 @@ include "./includes/navigation.php";
                 } ?>
                 <!-- First Blog Post -->
                 <h2>
-                    <a href="#"><?php echo $show_post_title ?></a>
+                    <a href="/course/CMS/post/<?php echo $show_post_id ?>"><?php echo $show_post_title ?></a>
                 </h2>
                 <p class="lead">
                     by <a href=""><?php echo $show_post_author ?></a>
