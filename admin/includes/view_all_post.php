@@ -141,18 +141,24 @@ if (isset($_POST['checkBoxesArray'])) {
 
                     <td><?php echo $post_date    ?></td>
                     <td><?php echo $post_view    ?></td>
-                    <td><a href="../post.php?p_id=<?php echo $post_id; ?>" class="btn btn-secondary">Link Post</a></td>
+                    <td><a href="../post.php?p_id=<?php echo $post_id; ?>" class="btn btn-success">Link Post</a></td>
                     <td><a href="posts.php?source=edit_posts&p_id=<?php echo $post_id; ?>" class="btn btn-secondary">Edit</a></td>
                     <!-- <td><a onclick="javascript: return confirm('Are you sure?');" href="posts.php?delete=<?php echo $post_id; ?>" class="btn btn-danger">Delete</a></td> -->
-                    <td><a rel="<?php echo $post_id; ?>" href="javascript:void(0)" class="delete_link">Delete</a></td>
+                    <form action="" method="post">
+                        <input type="hidden" name="post_id" value="<?php echo $post_id?>">
+                        <td><input type="submit" name="delete" class="btn btn-danger" value="Delete"></td>
+                    </form>
+                    <!-- <td><a rel="<?php echo $post_id; ?>" href="javascript:void(0)" class="delete_link">Delete</a></td> -->
                 </tr>
 
             <?php } ?>
 
             <?php //delete post
-            if (isset($_GET['delete'])) {
-                $post_id_delete = escape($_GET['delete']);
-                $post_id_delete = mysqli_real_escape_string($connection, $_GET['delete']);
+            // if (isset($_GET['delete'])) {
+            //     $post_id_delete = escape($_GET['delete']);
+            if (isset($_POST['delete'])) {
+                $post_id_delete = escape($_POST['post_id']);
+                // $post_id_delete = mysqli_real_escape_string($connection, $_GET['delete']);
 
 
                 $user_id = escape($_SESSION['user_id']);

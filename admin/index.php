@@ -175,13 +175,15 @@ include "./includes/admin_header.php";
 
             <!-- count post by status -->
             <?php
-            $query = "SELECT * FROM posts WHERE post_status = 'published'";
-            $select_post_published = mysqli_query($connection, $query);
-            $post_published = mysqli_num_rows($select_post_published);
+            // $query = "SELECT * FROM posts WHERE post_status = 'published'";
+            // $select_post_published = mysqli_query($connection, $query);
+            // $post_published = mysqli_num_rows($select_post_published);
+            $post_published = countData("posts WHERE post_status = 'published'");
 
-            $query = "SELECT * FROM posts WHERE post_status = 'draft'";
-            $select_post_draft = mysqli_query($connection, $query);
-            $post_draft = mysqli_num_rows($select_post_draft);
+            // $query = "SELECT * FROM posts WHERE post_status = 'draft'";
+            // $select_post_draft = mysqli_query($connection, $query);
+            // $post_draft = mysqli_num_rows($select_post_draft);
+            $post_draft = countData("posts WHERE post_status = 'draft'");
 
 
 

@@ -8,49 +8,42 @@
 
 <?php
 if (isset($_POST['submit'])) {
-    $username = $_POST['username'];
-    $email = $_POST['email'];
-    $password = $_POST['password'];
+    $username = trim($_POST['username']);
+    $email = trim($_POST['email']);
+    $password = trim($_POST['password']);
+
+    $error = [
+        'username' => '',
+        'email' => '',
+        'password' => ''
+    ];
+
+    $valid_username = checkUsername($username);
+    $valid_email = checkEmail($email);
+
 
     if (empty($username) || empty($email) || empty($password)) {
+        // $error['username'] = "Username cannot be empty";
+        // $error['email'] = "Email cannot be empty";
+        // $error['password'] = "Password cannot be empty";
         echo "<script>alert('Field cannot be empty')</script>";
+    } else if (strlen($username) < 4) {
+        $error['username'] = "Username must be longer than 4";
+        // echo "<script>alert('{$error['username']}')</script>";
+    } else if (strlen($password) < 8) {
+        $error['password'] = "Password must be longer than 8";
+        // echo "<script>alert('{$error['password']}')</script>";
+    } else if ($valid_username >= 1) {
+        $error['username'] = "Username already been used";
+        // echo "<script>alert('{$error['username']}')</script>";
+        // echo "<script>alert('Username already been used')</script>";
+    } else if ($valid_email >= 1) {
+        $error['email'] = "Email already been used, <a href='index.php'>Login</a?";
+        // echo "<script>alert('{$error['email']}')</script>";
+        // echo "<script>alert('email already been used')</script>";
     } else {
-
-        $username = mysqli_real_escape_string($connection, $username);
-        $email = mysqli_real_escape_string($connection, $email);
-        $password = mysqli_real_escape_string($connection, $password);
-
-        $query = "SELECT randsalt FROM users";
-        $select_randsalt = mysqli_query($connection, $query);
-        
-        //crypt
-        $password = password_hash($password, PASSWORD_BCRYPT, array('cost'=>12));
-
-        //menambil salt dari kolom database
-        // $row = mysqli_fetch_assoc($select_randsalt);
-        // $salt = $row['randsalt'];
-        // $password = crypt($password, $salt);
-
-        //cara lain
-        // $hashformat = "2y$10$";
-        // $salt = "willyoumarrymeyeahjust";
-        // $hash_and_salt = $hashformat . $salt;
-        // $password = crypt($password, $hash_and_salt);
-
-
-        $query = "INSERT INTO users (username, user_email, user_password, role) ";
-        $query .= "VALUES('$username', '$email', '$password', 'subscriber')";
-        $create_account = mysqli_query($connection, $query);
-
-        if (!$create_account) {
-            die("Failed" . mysqli_error($connection));
-        }
-
-        echo "<script>alert('Success')</script>";
+        registration($username, $email, $password);
     }
-
-
-    //checkQuery($select_randsalt);
 }
 
 ?>
@@ -69,14 +62,17 @@ if (isset($_POST['submit'])) {
                             <div class="form-group">
                                 <label for="username" class="sr-only">username</label>
                                 <input type="text" name="username" id="username" class="form-control" placeholder="Enter Desired Username">
+                                <p><?php echo isset($error['username']) ? $error['username'] : '' ?></p>
                             </div>
                             <div class="form-group">
                                 <label for="email" class="sr-only">Email</label>
                                 <input type="email" name="email" id="email" class="form-control" placeholder="somebody@example.com">
+                                <p><?php echo isset($error['email']) ? $error['email'] : '' ?></p>
                             </div>
                             <div class="form-group">
                                 <label for="password" class="sr-only">Password</label>
                                 <input type="password" name="password" id="key" class="form-control" placeholder="Password">
+                                <p><?php echo isset($error['password']) ? $error['password'] : '' ?></p>
                             </div>
 
                             <input type="submit" name="submit" id="btn-login" class="btn btn-custom btn-lg btn-block" value="Register">

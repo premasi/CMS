@@ -1,6 +1,7 @@
 <?php
 
-function escape($string){
+function escape($string)
+{
     global $connection;
     return mysqli_real_escape_string($connection, trim($string));
 }
@@ -62,13 +63,13 @@ function insert_categories()
 
         $query = "SELECT * FROM categories WHERE cat_title = '$cat_title'";
         $get_another_cat = mysqli_query($connection, $query);
-        while($row = mysqli_fetch_assoc($get_another_cat)){
+        while ($row = mysqli_fetch_assoc($get_another_cat)) {
             $another_title = $row['cat_title'];
         }
 
 
 
-        if($cat_title == $another_title){
+        if ($cat_title == $another_title) {
             echo "Category already created!";
         } else if ($cat_title == "" || empty($cat_title) || strlen($cat_title) < 4) {
             echo "Must be longer than 4";
@@ -119,9 +120,65 @@ function delete_categories()
     }
 }
 
-function countData($table){
+function countData($table)
+{
     global $connection;
     $query = "SELECT * FROM " . $table;
     $select_post = mysqli_query($connection, $query);
     return $result = mysqli_num_rows($select_post);
+}
+
+function registration($username, $email, $password)
+{
+    global $connection;
+
+    $username = mysqli_real_escape_string($connection, $username);
+    $email = mysqli_real_escape_string($connection, $email);
+    $password = mysqli_real_escape_string($connection, $password);
+
+    $query = "SELECT randsalt FROM users";
+    $select_randsalt = mysqli_query($connection, $query);
+
+    //crypt
+    $password = password_hash($password, PASSWORD_BCRYPT, array('cost' => 12));
+
+    //menambil salt dari kolom database
+    // $row = mysqli_fetch_assoc($select_randsalt);
+    // $salt = $row['randsalt'];
+    // $password = crypt($password, $salt);
+
+    //cara lain
+    // $hashformat = "2y$10$";
+    // $salt = "willyoumarrymeyeahjust";
+    // $hash_and_salt = $hashformat . $salt;
+    // $password = crypt($password, $hash_and_salt);
+
+
+    $query = "INSERT INTO users (username, user_email, user_password, role) ";
+    $query .= "VALUES('$username', '$email', '$password', 'subscriber')";
+    $create_account = mysqli_query($connection, $query);
+
+    if (!$create_account) {
+        die("Failed" . mysqli_error($connection));
+    }
+
+    echo "<script>alert('Success')</script>";
+    header("index.php");
+}
+
+
+function checkUsername($username)
+{
+    global $connection;
+    $query = "SELECT * FROM users WHERE username = '$username'";
+    $get_username = mysqli_query($connection, $query);
+    return $count_username = mysqli_num_rows($get_username);
+}
+
+function checkEmail($email)
+{
+    global $connection;
+    $query = "SELECT * FROM users WHERE user_email = '$email'";
+    $get_email = mysqli_query($connection, $query);
+    return $count_email = mysqli_num_rows($get_email);
 }
