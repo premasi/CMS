@@ -1,4 +1,30 @@
 <?php
+function redirect($location){
+    header("Location:".$location);
+    exit;
+}
+
+function checkMethod($method=NULL){
+    if($_SERVER['REQUEST_METHOD'] == strtoupper($method)){
+        return true;
+    }
+    return false;
+
+
+}
+
+function checkLogin(){
+    if(isset($_SESSION['user_id'])){
+        return true;
+    } 
+    return false;
+}
+
+function redirectLogin($redirectLocation = NULL){
+    if(checkLogin()){
+        redirect($redirectLocation);
+    }
+}
 
 function escape($string)
 {
@@ -127,6 +153,24 @@ function countData($table)
     $select_post = mysqli_query($connection, $query);
     return $result = mysqli_num_rows($select_post);
 }
+
+function usersRole($user_id)
+{
+    global $connection;
+    $query = "SELECT role FROM users WHERE user_id = " . $user_id;
+    $select_users = mysqli_query($connection, $query);
+    
+    $row = mysqli_fetch_assoc($select_users);
+
+    if($row['role'] == "admin"){
+        return true;
+    } else {
+        return false;
+    }
+
+
+}
+
 
 function registration($username, $email, $password)
 {

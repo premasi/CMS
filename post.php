@@ -70,7 +70,7 @@ include "./includes/navigation.php";
                     </p>
                     <p><span class="glyphicon glyphicon-time"></span><?php echo $show_post_date ?></p>
                     <hr>
-                    <img class="img-responsive" src="./images/<?php echo $show_image ?>" alt="">
+                    <img class="img-responsive" src="/course/CMS/images/<?php echo $show_image ?>" alt="">
                     <hr>
                     <p><?php echo $show_post_content ?></p>
                 <?php

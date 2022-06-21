@@ -1,3 +1,16 @@
+<?php
+
+if (checkMethod('post')) {
+	if (isset($_POST['username']) && isset($_POST['password'])) {
+		include "includes/login.php";
+	}
+}
+
+
+
+
+?>
+
 <div class="col-md-4">
 
 
@@ -24,7 +37,7 @@
             <a href="./includes/logout.php" class="btn btn-danger">Log Out</a>
         <?php else : ?>
             <h4>Login</h4>
-            <form action="./includes/login.php" method="post">
+            <form method="post">
                 <div class="form-group">
                     <input name="username" type="text" class="form-control" placeholder="Enter Username">
                 </div>
