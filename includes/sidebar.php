@@ -1,9 +1,9 @@
 <?php
 
 if (checkMethod('post')) {
-	if (isset($_POST['username']) && isset($_POST['password'])) {
-		include "includes/login.php";
-	}
+    if (isset($_POST['username']) && isset($_POST['password'])) {
+        include "includes/login.php";
+    }
 }
 
 
@@ -46,44 +46,48 @@ if (checkMethod('post')) {
                 </div>
                 <button type="submit" name="login" class="btn btn-primary" value="Login">Login</button>
                 <a href="/course/CMS/registration" class="btn btn-secondary ml-1" value="Registration">Register</a>
+                <div class="form-group">
+
+                    <a href="forgot?forgot=<?php echo uniqid(true)?>">Forgot password?</a>
+                </div>
             </form>
             <!-- /.input-group -->
-        <?php endif; ?>    
+        <?php endif; ?>
     </div>
 
 
 
-<!-- Blog Categories Well -->
-<div class="well">
-    <h4>Blog Categories</h4>
-    <div class="row">
-        <div class="col-lg-12">
-            <ul class="list-unstyled">
-                <?php
+    <!-- Blog Categories Well -->
+    <div class="well">
+        <h4>Blog Categories</h4>
+        <div class="row">
+            <div class="col-lg-12">
+                <ul class="list-unstyled">
+                    <?php
 
-                $query = "SELECT * FROM categories LIMIT 4";
-                $select_all_category = mysqli_query($connection, $query);
+                    $query = "SELECT * FROM categories LIMIT 4";
+                    $select_all_category = mysqli_query($connection, $query);
 
-                while ($row = mysqli_fetch_assoc($select_all_category)) {
-                    $show_id = escape($row['cat_id']);
-                    $show_cat = escape($row['cat_title']);
+                    while ($row = mysqli_fetch_assoc($select_all_category)) {
+                        $show_id = escape($row['cat_id']);
+                        $show_cat = escape($row['cat_title']);
 
-                    echo "<li><a href='/course/CMS/category/{$show_id}'>{$show_cat}</a></li>";
-                }
+                        echo "<li><a href='/course/CMS/category/{$show_id}'>{$show_cat}</a></li>";
+                    }
 
 
-                ?>
-            </ul>
+                    ?>
+                </ul>
+            </div>
+
         </div>
-
+        <!-- /.row -->
     </div>
-    <!-- /.row -->
-</div>
 
-<!-- Side Widget Well -->
-<div class="well">
-    <h4>Side Widget Well</h4>
-    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore, perspiciatis adipisci accusamus laudantium odit aliquam repellat tempore quos aspernatur vero.</p>
-</div>
+    <!-- Side Widget Well -->
+    <div class="well">
+        <h4>Side Widget Well</h4>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore, perspiciatis adipisci accusamus laudantium odit aliquam repellat tempore quos aspernatur vero.</p>
+    </div>
 
 </div>

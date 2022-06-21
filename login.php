@@ -1,15 +1,15 @@
-<?php  include "includes/header.php"; ?>
+<?php include "includes/header.php"; ?>
 
 
 
 <!-- Navigation -->
 
-<?php  include "includes/navigation.php"; ?>
-<?php  
+<?php include "includes/navigation.php"; ?>
+<?php
 
-if(checkMethod('post')){
-	if(isset($_POST['username']) && isset($_POST['password'])){
-		include "includes/login.php"; 
+if (checkMethod('post')) {
+	if (isset($_POST['username']) && isset($_POST['password'])) {
+		include "includes/login.php";
 	}
 }
 
@@ -58,6 +58,11 @@ if(checkMethod('post')){
 										<input name="login" class="btn btn-lg btn-primary btn-block" value="Login" type="submit">
 									</div>
 
+									<div class="form-group">
+
+										<a href="forgot?forgot=<?php echo uniqid(true)?>">Forgot password?</a>
+									</div>
+
 
 								</form>
 
@@ -72,6 +77,6 @@ if(checkMethod('post')){
 
 	<hr>
 
-	<?php include "includes/footer.php";?>
+	<?php include "includes/footer.php"; ?>
 
 </div> <!-- /.container -->

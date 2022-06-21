@@ -1,27 +1,31 @@
 <?php
-function redirect($location){
-    header("Location:".$location);
+
+
+function redirect($location)
+{
+    header("Location:" . $location);
     exit;
 }
 
-function checkMethod($method=NULL){
-    if($_SERVER['REQUEST_METHOD'] == strtoupper($method)){
+function checkMethod($method = NULL)
+{
+    if ($_SERVER['REQUEST_METHOD'] == strtoupper($method)) {
         return true;
     }
     return false;
-
-
 }
 
-function checkLogin(){
-    if(isset($_SESSION['user_id'])){
+function checkLogin()
+{
+    if (isset($_SESSION['user_id'])) {
         return true;
-    } 
+    }
     return false;
 }
 
-function redirectLogin($redirectLocation = NULL){
-    if(checkLogin()){
+function redirectLogin($redirectLocation = NULL)
+{
+    if (checkLogin()) {
         redirect($redirectLocation);
     }
 }
@@ -159,16 +163,14 @@ function usersRole($user_id)
     global $connection;
     $query = "SELECT role FROM users WHERE user_id = " . $user_id;
     $select_users = mysqli_query($connection, $query);
-    
+
     $row = mysqli_fetch_assoc($select_users);
 
-    if($row['role'] == "admin"){
+    if ($row['role'] == "admin") {
         return true;
     } else {
         return false;
     }
-
-
 }
 
 
