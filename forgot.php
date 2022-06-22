@@ -1,6 +1,18 @@
-<?php include "includes/db.php";?>
-<?php include "includes/header.php"; ?>
+<?php
+//Import PHPMailer classes into the global namespace
+//These must be at the top of your script, not inside a function
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
 
+//Load Composer's autoloader
+require 'vendor/autoload.php';
+
+?>
+
+<?php include "includes/db.php"; ?>
+<?php include "includes/header.php"; ?>
+<?php require './classes/config.php' ?>
 
 
 <!-- Navigation -->
@@ -23,10 +35,35 @@ if (checkMethod('post')) {
         $search_email = checkEmail($email);
 
         if ($search_email > 0) {
-            if ($stmt = mysqli_prepare($connection, "UPDATE users SET token = '{$token}' WHERE user_email = ?")){
+            if ($stmt = mysqli_prepare($connection, "UPDATE users SET token = '{$token}' WHERE user_email = ?")) {
                 mysqli_stmt_bind_param($stmt, "s", $email);
                 mysqli_stmt_execute($stmt);
                 mysqli_stmt_close($stmt);
+
+                //configure phpmailer
+                $mail = new PHPMailer();
+
+                //Server settings
+                $mail->SMTPDebug = SMTP::DEBUG_SERVER;                      //Enable verbose debug output
+                $mail->isSMTP();                                            //Send using SMTP
+                $mail->Host       = config::SMTP_HOST;                     //Set the SMTP server to send through
+                $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
+                $mail->Username   = config::SMTP_USER;                     //SMTP username
+                $mail->Password   = config::SMTP_PASSWORD;                               //SMTP password
+                $mail->SMTPSecure = 'tls';            //Enable implicit TLS encryption
+                $mail->Port       = config::SMTP_PORT;
+                $mail->isHTML(true);                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
+                $mail->setFrom('from@example.com', 'Mailer');
+                $mail->addAddress($email);     //Add a recipient
+                $mail->Subject = 'Here is the subject';
+                $mail->Body    = 'This is the HTML message body <b>in bold!</b>';
+                $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
+
+                if($mail->send()){
+                    echo "send";
+                } else {
+                    echo "send failed";
+                }
             } else {
                 echo "Something wrong";
             }
