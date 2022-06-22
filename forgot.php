@@ -44,7 +44,7 @@ if (checkMethod('post')) {
                 $mail = new PHPMailer();
 
                 //Server settings
-                $mail->SMTPDebug = SMTP::DEBUG_SERVER;                      //Enable verbose debug output
+                //$mail->SMTPDebug = SMTP::DEBUG_SERVER;                      //Enable verbose debug output
                 $mail->isSMTP();                                            //Send using SMTP
                 $mail->Host       = config::SMTP_HOST;                     //Set the SMTP server to send through
                 $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
@@ -53,16 +53,19 @@ if (checkMethod('post')) {
                 $mail->SMTPSecure = 'tls';            //Enable implicit TLS encryption
                 $mail->Port       = config::SMTP_PORT;
                 $mail->isHTML(true);                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
+                $mail->charSet = 'UTF-8';
                 $mail->setFrom('from@example.com', 'Mailer');
                 $mail->addAddress($email);     //Add a recipient
-                $mail->Subject = 'Here is the subject';
-                $mail->Body    = 'This is the HTML message body <b>in bold!</b>';
+                $mail->Subject = 'Recovery Password';
+                $mail->Body    = "<p>Click here to reset your password
+                <a href='http://localhost/course/CMS/reset?email=$email&token=$token'>Reset Password</a>
+                </p>";
                 $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
 
                 if($mail->send()){
-                    echo "send";
+                    echo "<Script>alert('Email was send')</script>";
                 } else {
-                    echo "send failed";
+                    echo "<Script>alert('Failed')</script>";
                 }
             } else {
                 echo "Something wrong";
