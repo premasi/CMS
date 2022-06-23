@@ -17,7 +17,7 @@ if (checkMethod('post')) {
     <!-- Blog Search Well -->
     <div class="well">
         <h4>Blog Search</h4>
-        <form action="./search.php" method="post">
+        <form action="/course/CMS/search.php" method="post">
             <div class="input-group">
                 <input name="search" type="text" class="form-control">
                 <span class="input-group-btn">
@@ -34,7 +34,7 @@ if (checkMethod('post')) {
     <div class="well">
         <?php if (isset($_SESSION['user_id'])) : ?>
             <h4>You are already login</h4>
-            <a href="./includes/logout.php" class="btn btn-danger">Log Out</a>
+            <a href="/course/CMS/includes/logout.php" class="btn btn-danger">Log Out</a>
         <?php else : ?>
             <h4>Login</h4>
             <form method="post">

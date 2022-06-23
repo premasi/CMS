@@ -45,16 +45,17 @@ include "./includes/navigation.php";
                     <?php
                     if (isset($_SESSION['user_id'])) {
                         $user_id = escape($_SESSION['user_id']);
-                        $query = "SELECT role FROM users WHERE user_id = $user_id";
+                        $query = "SELECT username, role FROM users WHERE user_id = $user_id";
                         $role = mysqli_query($connection, $query);
 
                         while ($row = mysqli_fetch_assoc($role)) {
+                            $get_username = escape($row['username']);
                             $get_role = escape($row['role']);
 
-                            if ($get_role === "admin") {
+                            if ($get_role === "admin" && $get_username === $show_post_author) {
 
                     ?>
-                                <a href="./admin/posts.php?source=edit_posts&p_id=<?php echo $post_id ?>">
+                                <a href="/course/CMS/admin/posts.php?source=edit_posts&p_id=<?php echo $post_id ?>">
                                     <p class="text-right">Edit Post</p>
                                 </a>
                     <?php
@@ -73,6 +74,14 @@ include "./includes/navigation.php";
                     <img class="img-responsive" src="/course/CMS/images/<?php echo $show_image ?>" alt="">
                     <hr>
                     <p><?php echo $show_post_content ?></p>
+                    <hr>
+                    <div class="row">
+                        <p class="pull-right"><a href=""><span class="glyphicon glyphicon-thumbs-up"></span> Like</a></p>
+                    </div>
+                    <div class="row">
+                        <p class="pull-right">Like : 10</p>
+                    </div>
+                    <div class="clearfix"></div>
                 <?php
                 }
 
@@ -157,7 +166,7 @@ include "./includes/navigation.php";
                             <h4 class="media-heading"><?php echo $comment_author; ?>
                                 <small><?php echo $comment_date; ?></small>
                             </h4>
-                            <?php echo $comment_content; ?>
+                            <p><?php echo $comment_content; ?></p>
                         </div>
                     </div>
 
@@ -189,3 +198,7 @@ include "./includes/navigation.php";
     include "./includes/footer.php";
 
     ?>
+
+    <script>
+        
+    </script>

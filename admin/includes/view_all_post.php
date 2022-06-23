@@ -89,7 +89,14 @@ if (isset($_POST['checkBoxesArray'])) {
         </thead>
         <tbody>
             <?php
-            $query = "SELECT * FROM posts ORDER BY post_date DESC ";
+            //get username for post
+            // $user_id = $_SESSION['user_id'];
+            // $query = "SELECT username FROM users WHERE user_id = $user_id";
+            // $get_username = mysqli_query($connection, $query);
+            // $row = mysqli_fetch_assoc($get_username);
+            // $author = $row['username'];
+
+            $query = "SELECT * FROM posts ORDER BY post_date DESC";
             $select_posts = mysqli_query($connection, $query);
 
             while ($row = mysqli_fetch_assoc($select_posts)) {
