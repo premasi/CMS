@@ -3,12 +3,19 @@ include "./includes/db.php";
 global $connection;
 include "./includes/header.php";
 
+session_start();
 
+$user_id = $_SESSION['user_id'];
 ?>
 
 <!-- Navigation -->
 <?php
 include "./includes/navigation.php";
+
+
+if(isset($_POST['liked'])){
+    echo "<h1> RORRRRR</h1>";
+}
 
 ?>
 
@@ -76,7 +83,7 @@ include "./includes/navigation.php";
                     <p><?php echo $show_post_content ?></p>
                     <hr>
                     <div class="row">
-                        <p class="pull-right"><a href=""><span class="glyphicon glyphicon-thumbs-up"></span> Like</a></p>
+                        <p class="pull-right"><a id = "like" href="#"><span class="glyphicon glyphicon-thumbs-up"></span> Like</a></p>
                     </div>
                     <div class="row">
                         <p class="pull-right">Like : 10</p>
@@ -200,5 +207,21 @@ include "./includes/navigation.php";
     ?>
 
     <script>
-        
+        $(document).ready(function(){
+            var post_id = <?php echo $post_id;?>
+            var user_id = <?php echo $user_id;?>
+
+
+            $('#like').click(function(){
+                $.ajax({
+                    url : "/course/CMS/post/<?php echo $post_id; ?>",
+                    type: "post",
+                    data: {
+                        'liked': 1,
+                        'post_id': post_id,
+                        'user_id': user_id
+                    }
+                })
+            });
+        })
     </script>
