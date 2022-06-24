@@ -1,5 +1,17 @@
 <?php
 
+function userLiked($post_id, $user_id){
+    global $connection;
+    $result = mysqli_query($connection, "SELECT * FROM likes WHERE user_id = $user_id AND post_id = $post_id");
+    return mysqli_num_rows($result) >= 1 ? true : false; 
+}
+
+function countPostLiked($post_id){
+    global $connection;
+    $result = mysqli_query($connection, "SELECT likes FROM posts WHERE post_id = $post_id");
+    $fetchResult = mysqli_fetch_assoc($result);
+    return $fetchResult['likes'];
+}
 
 function redirect($location)
 {

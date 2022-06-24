@@ -56,7 +56,7 @@ if (isset($_POST['login'])) {
             // verifikasi cara 2
             if (password_verify($password, $user_password)) {
                 $_SESSION['user_id'] = $user_id;
-                header("location: ./admin/index.php");
+                header("location: /course/CMS/admin/index.php");
             } else {
                 echo "<script>alert('Login failed')</script>";
             }

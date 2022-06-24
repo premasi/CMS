@@ -13,8 +13,41 @@ $user_id = $_SESSION['user_id'];
 include "./includes/navigation.php";
 
 
-if(isset($_POST['liked'])){
-    echo "<h1> RORRRRR</h1>";
+if (isset($_POST['liked'])) {
+
+    $post_id = $_POST['post_id'];
+    $user_id = $_POST['user_id'];
+
+    // search post
+    $searchPost = "SELECT * FROM posts WHERE post_id = $post_id";
+    $searchQuery = mysqli_query($connection, $searchPost);
+    $searchResult = mysqli_fetch_array($searchQuery);
+    $searchLikes = $searchResult['likes'];
+
+    //update post
+    mysqli_query($connection, "UPDATE posts SET likes = $searchLikes + 1 WHERE post_id = $post_id");
+
+    //create likes
+    mysqli_query($connection, "INSERT INTO likes (user_id, post_id) VALUES ($user_id, $post_id)");
+}
+
+if (isset($_POST['unliked'])) {
+
+    $post_id = $_POST['post_id'];
+    $user_id = $_POST['user_id'];
+
+    // search post
+    $searchPost = "SELECT * FROM posts WHERE post_id = $post_id";
+    $searchQuery = mysqli_query($connection, $searchPost);
+    $searchResult = mysqli_fetch_array($searchQuery);
+    $searchLikes = $searchResult['likes'];
+
+    //delete likes
+    mysqli_query($connection, "DELETE FROM likes WHERE user_id = $user_id AND post_id = $post_id");
+
+    //update post
+    mysqli_query($connection, "UPDATE posts SET likes = $searchLikes - 1 WHERE post_id = $post_id");
+    exit();
 }
 
 ?>
@@ -82,11 +115,21 @@ if(isset($_POST['liked'])){
                     <hr>
                     <p><?php echo $show_post_content ?></p>
                     <hr>
+
+                    <?php if (checkLogin()) : ?>
+                        <div class="row">
+                            <p class="pull-right"><a class="<?php echo userLiked($post_id, $user_id) ? 'unlike' : 'like'; ?>" href="/course/CMS/post/<?php echo $post_id; ?>"
+                                data-toggle="tooltip" data-placement = "top" title="<?php echo userLiked($post_id, $user_id) ? 'I like this before' : 'Want to like this post?'; ?>"
+                            
+                            ><span class="<?php echo userLiked($post_id, $user_id) ? 'glyphicon glyphicon-thumbs-down' : 'glyphicon glyphicon-thumbs-up'?>"></span> <?php echo userLiked($post_id, $user_id) ? ' Unlike' : ' Like'; ?></a></p>
+                        </div>
+                    <?php else : ?>
+                        <div class="row">
+                            <p class="pull-right">You must login to like this post, click here to <a href="/course/CMS/login">Login</a></p>
+                        </div>
+                    <?php endif; ?>
                     <div class="row">
-                        <p class="pull-right"><a id = "like" href="#"><span class="glyphicon glyphicon-thumbs-up"></span> Like</a></p>
-                    </div>
-                    <div class="row">
-                        <p class="pull-right">Like : 10</p>
+                        <p class="pull-right">Like : <?php echo countPostLiked($post_id)?></p>
                     </div>
                     <div class="clearfix"></div>
                 <?php
@@ -207,21 +250,37 @@ if(isset($_POST['liked'])){
     ?>
 
     <script>
-        $(document).ready(function(){
-            var post_id = <?php echo $post_id;?>
-            var user_id = <?php echo $user_id;?>
+        $(document).ready(function() {
+            $("[data-toggle='tooltip']").tooltip();
 
 
-            $('#like').click(function(){
+            var post_id = <?php echo $post_id; ?>;
+            var user_id = <?php echo $user_id; ?>;
+
+            //like
+            $('.like').click(function() {
                 $.ajax({
-                    url : "/course/CMS/post/<?php echo $post_id; ?>",
+                    url: "/course/CMS/post/<?php echo $post_id; ?>",
                     type: "post",
                     data: {
                         'liked': 1,
                         'post_id': post_id,
                         'user_id': user_id
                     }
-                })
+                });
             });
-        })
+
+            //unlike
+            $('.unlike').click(function() {
+                $.ajax({
+                    url: "/course/CMS/post/<?php echo $post_id; ?>",
+                    type: "post",
+                    data: {
+                        'unliked': 1,
+                        'post_id': post_id,
+                        'user_id': user_id
+                    }
+                });
+            });
+        });
     </script>
